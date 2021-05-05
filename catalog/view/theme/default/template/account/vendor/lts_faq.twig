@@ -15,11 +15,11 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ faq.faq_id }}"><h4 class="panel-title">
-        {{ faq.question }}</h4></a>
+        {{text_question}} :{{ faq.question }}</h4></a>
     </div>
     <div id="collapse{{ faq.faq_id }}" class="panel-collapse collapse">
       
-      <div class="panel-body"><span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
+      <div class="panel-body">{{text_answer}}<span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
     </div>
   </div>
   
@@ -41,7 +41,7 @@
     
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-review" class="form-horizontal">
             
-             <div class="form-group required">
+           <!--   <div class="form-group required">
                     <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}></label>
                     <div class="col-sm-10">
                         <select name="status" id="input-status" class="form-control">
@@ -62,7 +62,7 @@
                   <input type="hidden" name="image" value="{{ image }}" id="input-image" />
                 </div>
               </div>
-            
+             -->
             <div class="tab-content">
             <ul class="nav nav-tabs" id="language">
                 {% for language in languages %}

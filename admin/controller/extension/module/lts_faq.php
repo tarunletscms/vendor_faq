@@ -98,7 +98,7 @@ class ControllerExtensionModuleLtsFaq extends Controller {
 
 
 	protected function validate() {
-		if (!$this->user->hasPermission('modify', 'extension/module/lts_vendor')) {
+		if (!$this->user->hasPermission('modify', 'extension/module/lts_faq')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 

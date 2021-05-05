@@ -83,11 +83,11 @@
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ faq.faq_id }}"><h4 class="panel-title">
-                    {{ faq.question }}</h4></a>
+                   {{text_question}} : {{ faq.question }}</h4></a>
                 </div>
                 <div id="collapse{{ faq.faq_id }}" class="panel-collapse collapse">
                   
-                  <div class="panel-body"><span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
+                  <div class="panel-body">{{text_answer}} :<span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
                 </div>
               </div>
               {% endfor %}
@@ -97,11 +97,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ faq.faq_id }}"><h4 class="panel-title">
-                    {{ faq.question }}</h4></a>
+                  {{text_question}} : {{ faq.question }}</h4></a>
                 </div>
                 <div id="collapse{{ faq.faq_id }}" class="panel-collapse collapse">
                   
-                  <div class="panel-body"><span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
+                  <div class="panel-body">{{text_answer}} : <span><img src="{{ faq.image }}"></span>{{ faq.answer }}</div>
                 </div>
               </div>
               {% endfor %}
@@ -109,7 +109,8 @@
                 {% if  faqs %}
                 <a href="{{faq_link}}"><button class="btn btn-primary"> {{ faq_page }} </button></a>
                 {% else %}
-                {{ text_no_data }}
+                {{ text_no_data }}<br>
+                <a href="{{faq_link}}"><button class="btn btn-primary"> {{ faq_ask_page }} </button></a>
                 {% endif %}
               </div>
               
@@ -127,6 +128,9 @@
              $_['tab_quesandans']               = 'Questions & Answers';
              $_['faq_page']                     = 'View all Questions & Answers';
              $_['text_no_data']                 = 'No Data Found';
+             $_['faq_ask_page']                 = 'Ask Question';
+              $_['text_question']                 = 'Question';
+             $_['text_answer']                 = 'Answer';
             ]]></add>
         </operation>
     </file> 

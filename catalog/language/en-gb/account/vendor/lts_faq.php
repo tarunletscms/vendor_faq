@@ -13,6 +13,8 @@ $_['text_edit']              = 'Edit Faq';
 $_['text_default']           = 'Default';
 $_['text_enabled']           = 'Enable';
 $_['text_disabled']           = 'Disable';
+$_['text_question']           = 'Question';
+$_['text_answer']           = 'Answer';
 
 
 

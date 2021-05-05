@@ -31,6 +31,9 @@ $_['column_sort_order']      = 'Sort Order';
 $_['column_product']         = 'Product';
 
 
+$_['button_save']         = 'save';
+
+
 // Error
 $_['error_warning']          = 'Warning: Please check the form carefully for errors!';
 $_['error_permission']       = 'Warning: You do not have permission to modify faqs!';

@@ -82,6 +82,7 @@ class ControllerAccountVendorLtsFaq extends Controller {
 
 		
 		$filter_data = array(
+			'product_id'=>$product_id,
 				'start'              => ($page - 1) * $limit,
 				'limit'              => $limit
 			);

@@ -46,7 +46,7 @@
 
             $data['faqs'] = array();
 
-            $faqs = $this->model_extension_module_lts_faq->getFaqs($this->config->get('module_lts_faq_limit'));
+            $faqs = $this->model_extension_module_lts_faq->getFaqs($this->config->get('module_lts_faq_limit'),$product_id);
             $faq_limit = $this->config->get('module_lts_faq_limit');
             foreach ($faqs as $faq) {
                 $data['faqs'][] = array(
@@ -106,7 +106,11 @@
               </div>
               {% endfor %}
               <div class="" style="text-align: center;margin-top: 5px;">
+                {% if  faqs %}
                 <a href="{{faq_link}}"><button class="btn btn-primary"> {{ faq_page }} </button></a>
+                {% else %}
+                {{ text_no_data }}
+                {% endif %}
               </div>
               
             {% endif %}
@@ -121,6 +125,8 @@
             <search ><![CDATA[$_['tab_review']               = 'Reviews (%s)';]]></search>
             <add position="before"><![CDATA[
              $_['tab_quesandans']               = 'Questions & Answers';
+             $_['faq_page']                     = 'View all Questions & Answers';
+             $_['text_no_data']                 = 'No Data Found';
             ]]></add>
         </operation>
     </file> 

@@ -20,7 +20,14 @@ class ControllerVendorLtsFaq extends Controller {
 		$this->load->model('vendor/lts_faq');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-			$this->model_vendor_lts_faq->addFaq($this->request->post);
+			$vendor_id=$this->model_vendor_lts_faq->getVendorProductById($this->request->post['product_id']);
+			if(!empty($vendor_id)){
+              $vendor_id=$vendor_id;
+			}else{
+               $vendor_id=0;
+			}
+			
+			$this->model_vendor_lts_faq->addFaq($this->request->post,$vendor_id);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -46,7 +53,7 @@ class ControllerVendorLtsFaq extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('catalog/faq', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			$this->response->redirect($this->url->link('vendor/lts_faq', 'user_token=' . $this->session->data['user_token'] . $url, true));
 		}
 
 		$this->getForm();
@@ -88,7 +95,7 @@ public function edit() {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('catalog/faq', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			$this->response->redirect($this->url->link('vendor/lts_faq', 'user_token=' . $this->session->data['user_token'] . $url, true));
 		}
 
 		$this->getForm();
@@ -219,6 +226,7 @@ public function edit() {
 			'limit'             => $this->config->get('config_limit_admin')
 		);
 
+        $this->load->model('catalog/product');
         $this->load->model('tool/image');
         $this->load->model('vendor/lts_faq');
 		$faq_total = $this->model_vendor_lts_faq->getTotalFaqs($filter_data);
@@ -226,18 +234,20 @@ public function edit() {
 		$results = $this->model_vendor_lts_faq->getFaqs($filter_data);
        
         $data['faqs']=array();
-		
 		foreach ($results as $result) {
+		$product=$this->model_catalog_product->getProduct($result['product_id']);
 			$data['faqs'][] = array(
 				'faq_id'  => $result['faq_id'],
 				'question'       => $result['question'],
+				'product'       =>$product['name'],
+				'product_id'       => $result['product_id'],
 				'answer'     => strip_tags(html_entity_decode($result['answer'], ENT_QUOTES, 'UTF-8')),
 				'image'     => $result['image'],
 				'thumb'     => $this->model_tool_image->resize($result['image'], 100, 100),
-				'edit'       => $this->url->link('catalog/faq/edit', 'user_token=' . $this->session->data['user_token'] . '&faq_id=' . $result['faq_id'] . $url, true)
+				'edit'       => $this->url->link('vendor/lts_faq/edit', 'user_token=' . $this->session->data['user_token'] . '&faq_id=' . $result['faq_id'] . $url, true)
 			);
 		}
-
+// echo '<pre>'; print_r($data['faqs']);die;
 
 		if (isset($this->error['warning'])) {
 			$data['error_warning'] = $this->error['warning'];
@@ -322,6 +332,7 @@ public function edit() {
 	
 	
 	protected function getForm() {
+		$this->load->model('catalog/product');
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_form'] = !isset($this->request->get['id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
@@ -359,6 +370,12 @@ public function edit() {
 		} else {
 			$data['error_answer'] = '';
 		}
+
+		if (isset($this->error['product'])) {
+			$data['error_product'] = $this->error['product'];
+		} else {
+			$data['error_product'] = '';
+		}
 			
 		
 		$url = '';
@@ -384,7 +401,7 @@ public function edit() {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('catalog/faq', 'user_token=' . $this->session->data['user_token'] . $url, true)
+			'href' => $this->url->link('vendor/lts_faq', 'user_token=' . $this->session->data['user_token'] . $url, true)
 		);
 		
 		
@@ -395,10 +412,10 @@ public function edit() {
 		if (!isset($this->request->get['faq_id'])) {
 			$data['action'] = $this->url->link('vendor/lts_faq/add', 'user_token=' . $this->session->data['user_token'] . $url, true);
 		} else {
-			$data['action'] = $this->url->link('catalog/faq/edit', 'user_token=' . $this->session->data['user_token'] . '&faq_id=' . $this->request->get['faq_id'] . $url, true);
+			$data['action'] = $this->url->link('vendor/lts_faq/edit', 'user_token=' . $this->session->data['user_token'] . '&faq_id=' . $this->request->get['faq_id'] . $url, true);
 		}
 
-		$data['cancel'] = $this->url->link('catalog/faq', 'user_token=' . $this->session->data['user_token'] . $url, true);
+		$data['cancel'] = $this->url->link('vendor/lts_faq', 'user_token=' . $this->session->data['user_token'] . $url, true);
 
 		if (isset($this->request->get['faq_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$faq_info = $this->model_vendor_lts_faq->getfaq($this->request->get['faq_id']);
@@ -431,6 +448,32 @@ public function edit() {
 			$data['status'] = '';
 		}
 
+		if (isset($this->request->post['product_id'])) {
+			$data['product_id'] = $this->request->post['product_id'];
+		} elseif (!empty($faq_info)) {
+			$data['product_id'] = $faq_info['product_id'];
+		} else {
+			$data['product_id'] = '';
+		}
+	if (isset($this->request->post['product'])) {
+			$data['product'] = $this->request->post['product'];
+		} elseif (!empty($faq_info)) {
+	    	$product = $this->model_catalog_product->getProduct($faq_info['product_id']);
+			$data['product'] = $product['name'];
+		} else {
+			$data['product'] = '';
+		}
+
+		if (isset($this->request->post['vendor_id'])) {
+			$data['vendor_id'] = $this->request->post['vendor_id'];
+		} elseif (!empty($faq_info)) {
+			$data['vendor_id'] = $faq_info['vendor_id'];
+		} else {
+			$data['vendor_id'] ='';
+		
+		}
+
+		
 		$this->load->model('tool/image');
 
 		if (isset($this->request->post['image']) && is_file(DIR_IMAGE . $this->request->post['image'])) {
@@ -462,6 +505,9 @@ public function edit() {
 		
 		if (!$this->user->hasPermission('modify', 'vendor/lts_faq')) {
 			$this->error['warning'] = $this->language->get('error_permission');
+		}
+		if (empty($this->request->post['product_id'])) {
+			$this->error['product'] = $this->language->get('error_product');
 		}
 
 		foreach ($this->request->post['faq_description'] as $language_id => $value) {

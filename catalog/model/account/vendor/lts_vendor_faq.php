@@ -60,7 +60,7 @@ class ModelAccountVendorLtsVendorFaq extends Model {
 
     public function getFaqs($data) {
         $data_faqs=array();
-        $sql="SELECT * FROM " . DB_PREFIX . "lts_faq f LEFT JOIN ".DB_PREFIX."lts_faq_description fd on f.faq_id=fd.faq_id where fd.language_id='".(int)$this->config->get('config_language_id')."' AND f.vendor_id='".$data['vendor_id']."'";
+        $sql="SELECT * FROM " . DB_PREFIX . "lts_faq f LEFT JOIN ".DB_PREFIX."lts_faq_description fd on f.faq_id=fd.faq_id where fd.language_id='".(int)$this->config->get('config_language_id')."' AND f.vendor_id='".$data['vendor_id']."' ";
         
 		$query = $this->db->query($sql);
 		

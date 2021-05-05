@@ -47,6 +47,17 @@
                   <input type="hidden" name="image" value="{{ image }}" id="input-image" />
                 </div>
               </div>
+
+               <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-product"><span data-toggle="tooltip" title="{{ help_product }}">{{ entry_product }}</span></label>
+            <div class="col-sm-10">
+              <input type="text" name="product" value="{{ product }}" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+              <input type="hidden" name="product_id" value="{{ product_id }}" />
+              <input type="hidden" name="vendor_id" value="{{ vendor_id }}" />
+              {% if error_product %}
+              <div class="text-danger">{{ error_product }}</div>
+              {% endif %} </div>
+           </div>
             
             <div class="tab-content">
             <ul class="nav nav-tabs" id="language">
@@ -63,8 +74,8 @@
                     <label class="col-sm-2 control-label" for="input-name{{ language.language_id }}">{{ entry_question }}</label>
                     <div class="col-sm-10">
                       <input type="text" name="faq_description[{{ language.language_id }}][question]" value="{{    faq_description[language.language_id] ? faq_description[language.language_id].question }}" placeholder=    "{{ entry_question }}" id="input-name{{ language.language_id }}" class="form-control" />
-                      {%  if error_title[language.language_id] %}
-                      <div class="text-danger">{{ error_title[language.language_id] }}</div>
+                      {%  if error_question[language.language_id] %}
+                      <div class="text-danger">{{ error_question[language.language_id] }}</div>
                       {% endif %}
                     </div>
                   </div>
@@ -74,6 +85,9 @@
                     <div class="col-sm-10">
                       <textarea name="faq_description[{{ language.language_id }}][answer]" placeholder="{{ entry_answer }}" id="input-answer{{ language.language_id }}" class="form-control summernote">{{faq_description[language.language_id] ? faq_description[language.language_id].answer }}</textarea>
                     </div>
+                     {%  if error_answer[language.language_id] %}
+                      <div class="text-danger">{{ error_answer[language.language_id] }}</div>
+                      {% endif %}
                   </div>
                   
                   </div>
@@ -96,5 +110,28 @@ $('.datetime').datetimepicker({
   </div>
   <script type="text/javascript"><!--
 $('#language a:first').tab('show');
+//--></script>
+
+ <script type="text/javascript"><!--
+$('input[name=\'product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'product\']').val(item['label']);
+    $('input[name=\'product_id\']').val(item['value']);   
+  } 
+});
 //--></script>
 {{ footer }}

@@ -53,8 +53,8 @@ class ModelAccountVendorLtsFaq extends Model {
 		
 	}
 
-	public function getTotalFaqs() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq");
+	public function getTotalFaqs($data) {
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq WHERE product_id='".$data['product_id']."' and status='1'");
 
 		return $query->row['total'];
 	}

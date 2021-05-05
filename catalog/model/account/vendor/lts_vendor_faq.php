@@ -51,9 +51,9 @@ class ModelAccountVendorLtsVendorFaq extends Model {
 
 
 	
-	public function getTotalFaqs() {
+	public function getTotalFaqs($data) {
 		
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq");
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq WHERE vendor_id='".$data['vendor_id']."'");
 
 		return $query->row['total'];
 	}

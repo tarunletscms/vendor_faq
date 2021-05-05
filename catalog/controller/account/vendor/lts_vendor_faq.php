@@ -222,7 +222,6 @@ public function edit() {
 			'question'          => $question,
 			'answer'            => $answer,
 			'vendor_id'         => $data['vendor_id'],
-			'product_id'        => $this->request->get['product_id'],
 			'sort'              => $sort,
 			'order'             => $order,
 			'start'             => ($page - 1) * $this->config->get('config_limit_admin'),

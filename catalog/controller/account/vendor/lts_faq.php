@@ -177,7 +177,7 @@ class ControllerAccountVendorLtsFaq extends Controller {
 				$url .= '&limit=' . $this->request->get['limit'];
 			}
 		
-			$faq_total = $this->model_account_vendor_lts_faq->getTotalFaqs();
+			$faq_total = $this->model_account_vendor_lts_faq->getTotalFaqs($filter_data);
 			
 
 			$pagination = new Pagination();

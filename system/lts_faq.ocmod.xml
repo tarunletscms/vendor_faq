@@ -27,7 +27,7 @@
         <operation error="skip" info="add left position">
             <search><![CDATA[$_['text_information']          = 'Information';]]></search>
             <add position="before"><![CDATA[
-			$_['text_letscms_faq']               = 'Letscms Vendor FAQ';
+			$_['text_letscms_faq']               = 'Vendor Product FAQ';
 			]]></add>
         </operation>
     </file>

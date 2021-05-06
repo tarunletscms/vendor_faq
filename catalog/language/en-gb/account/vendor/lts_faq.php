@@ -15,6 +15,7 @@ $_['text_enabled']           = 'Enable';
 $_['text_disabled']           = 'Disable';
 $_['text_question']           = 'Question';
 $_['text_answer']           = 'Answer';
+$_['text_faq']              = 'Product Question & Answer';
 
 
 

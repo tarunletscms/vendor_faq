@@ -6,7 +6,7 @@ $_['faq_page'] = 'View All Faqs';
 $_['heading_title']          = 'FAQs';
 
 // Text
-$_['text_success']           = 'Success: You have modified faqs!';
+$_['text_success']           = 'Success: Your question have successfully saved';
 $_['text_list']              = 'Faq List';
 $_['text_add']               = 'Add Faq';
 $_['text_edit']              = 'Edit Faq';

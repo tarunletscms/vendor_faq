@@ -59,7 +59,14 @@ class ControllerAccountVendorLtsFaq extends Controller {
 
 		$data['languages'] = $this->model_localisation_language->getLanguages();
         
+         if (isset($this->session->data['success'])) {
+      $data['success'] = $this->session->data['success'];
 
+		      unset($this->session->data['success']);
+		    } else {
+		      $data['success'] = '';
+		    }
+    
 		if (isset($this->request->get['page'])) {
 			$page = $this->request->get['page'];
 		} else {

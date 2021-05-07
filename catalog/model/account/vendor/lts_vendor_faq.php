@@ -52,8 +52,25 @@ class ModelAccountVendorLtsVendorFaq extends Model {
 
 	
 	public function getTotalFaqs($data) {
-		
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq WHERE vendor_id='".$data['vendor_id']."'");
+		$sql="SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq as lf join " . DB_PREFIX . "lts_faq_description as fd ON(lf.faq_id=fd.faq_id) WHERE lf.vendor_id='".$data['vendor_id']."'";
+		 $sort_data = array(
+            'fd.question',
+            'fd.answer'
+           
+        );
+		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+            $sql .= " ORDER BY " . $data['sort'];
+        } else {
+            $sql .= " ORDER BY fd.question";
+        }
+
+        if (isset($data['order']) && ($data['order'] == 'DESC')) {
+            $sql .= " DESC";
+        } else {
+            $sql .= " ASC";
+        }
+
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}
@@ -61,6 +78,24 @@ class ModelAccountVendorLtsVendorFaq extends Model {
     public function getFaqs($data) {
         $data_faqs=array();
         $sql="SELECT * FROM " . DB_PREFIX . "lts_faq f LEFT JOIN ".DB_PREFIX."lts_faq_description fd on f.faq_id=fd.faq_id where fd.language_id='".(int)$this->config->get('config_language_id')."' AND f.vendor_id='".$data['vendor_id']."' ";
+
+            $sort_data = array(
+            'fd.question',
+            'fd.answer'
+           
+        );
+		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+            $sql .= " ORDER BY " . $data['sort'];
+        } else {
+            $sql .= " ORDER BY fd.question";
+        }
+
+        if (isset($data['order']) && ($data['order'] == 'DESC')) {
+            $sql .= " DESC";
+        } else {
+            $sql .= " ASC";
+        }
+     
         
 		$query = $this->db->query($sql);
 		

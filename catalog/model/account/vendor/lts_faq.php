@@ -62,7 +62,7 @@ class ModelAccountVendorLtsFaq extends Model {
     public function getFaqs($data) {
         $data_faqs=array();
         $sql="SELECT * FROM " . DB_PREFIX . "lts_faq f LEFT JOIN ".DB_PREFIX."lts_faq_description fd on f.faq_id=fd.faq_id where fd.language_id='".(int)$this->config->get('config_language_id')."' and product_id='".$data['product_id']."' and status='1' LIMIT ". $data['start'] .' , '. $data['limit'];
-        
+       
 		$query = $this->db->query($sql);
 		
 		foreach($query->rows as $faq){

@@ -49,16 +49,51 @@ class ModelVendorLtsFaq extends Model {
 
 
 	
-	public function getTotalFaqs() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq");
+	public function getTotalFaqs($data) {
+		$sql="SELECT COUNT(*) AS total FROM " . DB_PREFIX . "lts_faq as lf join " . DB_PREFIX . "lts_faq_description as fd ON(lf.faq_id=fd.faq_id)";
+		 $sort_data = array(
+            'fd.question',
+            'fd.answer'
+           
+        );
+		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+            $sql .= " ORDER BY " . $data['sort'];
+        } else {
+            $sql .= " ORDER BY fd.question";
+        }
+
+        if (isset($data['order']) && ($data['order'] == 'DESC')) {
+            $sql .= " DESC";
+        } else {
+            $sql .= " ASC";
+        }
+       
+		$query = $this->db->query($sql);
 
 		return $query->row['total'];
 	}
 
-    public function getFaqs() {
+    public function getFaqs($data) {
         $data_faqs=array();
         $sql="SELECT * FROM " . DB_PREFIX . "lts_faq f LEFT JOIN ".DB_PREFIX."lts_faq_description fd on f.faq_id=fd.faq_id where fd.language_id='".(int)$this->config->get('config_language_id')."'";
-        
+
+         $sort_data = array(
+            'fd.question',
+            'fd.answer'
+           
+        );
+		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+            $sql .= " ORDER BY " . $data['sort'];
+        } else {
+            $sql .= " ORDER BY fd.question";
+        }
+
+        if (isset($data['order']) && ($data['order'] == 'DESC')) {
+            $sql .= " DESC";
+        } else {
+            $sql .= " ASC";
+        }
+     
 		$query = $this->db->query($sql);
 		
 		foreach($query->rows as $faq){

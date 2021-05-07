@@ -37,12 +37,12 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[question*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left">{% if sort == 'question' %}
+                  <td class="text-left">{% if sort == 'fd.question' %}
                     <a href="{{ sort_question }}" class="{{ order|lower }}">{{ column_question }}</a>
                     {% else %}
                     <a href="{{ sort_question }}">{{ column_question }}</a>
                     {% endif %}</td>
-                  <td class="text-left">{% if answer == 'answer' %}
+                  <td class="text-left">{% if sort == 'fd.answer' %}
                     <a href="{{ sort_answer }}" class="{{ order|lower }}">{{ column_answer }}</a>
                     {% else %}
                     <a href="{{ sort_answer }}">{{ column_answer}} </a>

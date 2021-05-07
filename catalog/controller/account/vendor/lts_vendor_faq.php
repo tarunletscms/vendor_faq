@@ -275,20 +275,25 @@ public function edit() {
 		$url = '';
 
 		if (isset($this->request->get['question'])) {
-			$url .= '&question=' . urlencode(html_entity_decode($this->request->get['question'], ENT_QUOTES, 'UTF-8'));
+			$url .= '&fd.question=' . urlencode(html_entity_decode($this->request->get['question'], ENT_QUOTES, 'UTF-8'));
 		}
 
 		if (isset($this->request->get['answer'])) {
-			$url .= '&answer=' . urlencode(html_entity_decode($this->request->get['answer'], ENT_QUOTES, 'UTF-8'));
+			$url .= '&fd.answer=' . urlencode(html_entity_decode($this->request->get['answer'], ENT_QUOTES, 'UTF-8'));
 		}
 
 		
 		if (isset($this->request->get['page'])) {
 			$url .= '&page=' . $this->request->get['page'];
 		}
+		if ($order == 'ASC') {
+            $url .= '&order=DESC';
+        } else {
+            $url .= '&order=ASC';
+        }
 
-		$data['sort_question'] = $this->url->link('account/vendor/lts_vendor_faq','sort=f.question' . $url, true);
-		$data['sort_answer'] = $this->url->link('account/vendor/lts_vendor_faq','sort=f.answer' . $url, true);
+		$data['sort_question'] = $this->url->link('account/vendor/lts_vendor_faq','sort=fd.question' . $url, true);
+		$data['sort_answer'] = $this->url->link('account/vendor/lts_vendor_faq','sort=fd.answer' . $url, true);
 		
 		$url = '';
 
@@ -308,6 +313,7 @@ public function edit() {
 		if (isset($this->request->get['order'])) {
 			$url .= '&order=' . $this->request->get['order'];
 		}
+		
 
 		$pagination = new Pagination();
 		$pagination->total = $faq_total;

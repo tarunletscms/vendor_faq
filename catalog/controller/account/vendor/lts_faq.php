@@ -73,11 +73,10 @@ class ControllerAccountVendorLtsFaq extends Controller {
 			$page = 1;
 		}
 
-		if (isset($this->request->get['limit'])) {
-			$limit = (int)$this->request->get['limit'];
-		} else {
-			$limit = $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit');
-		}
+		
+		
+			$limit = $this->config->get('config_limit_admin');
+		
 
 		
 		$data['breadcrumbs'] = array();
